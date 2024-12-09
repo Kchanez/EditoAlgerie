@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casbah Scroll Gallery</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Georgia', serif;
+      background-color: #f3efe4; /* Couleur beige rappelant l'époque */
+    }
+
+    .scroll-container {
+      display: flex;
+      width: 500%; /* 5 images */
+      transform: translateX(0);
+      transition: transform 0.5s ease-in-out;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      border: 8px solid #8b572a;
+    }
+
+    .scroll-container img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 50px;
+      color: #fff;
+      background: linear-gradient(145deg, #8b572a, #5a3820);
+      border: 3px solid #5a3820;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .arrow:hover {
+      transform: translateY(-50%) scale(1.2);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .arrow-left {
+      left: 15px;
+    }
+
+    .arrow-right {
+      right: 15px;
+    }
+
+    .arrow:active {
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .gallery-title {
+      z-index: 1;
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      font-weight: bold;
+      color: #5a3820;
+      background-color: rgba(251, 243, 224, 0.8);
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Personnages animés */
+    .characters {
+        width: 20%;
+        position: fixed;
+        bottom: 28%;
+        left: 6%;
+        display: flex;
+        height: auto;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .character {
+      width: 100%; /* Taille ajustée */
+      height: auto;
+      animation: walking 1s steps(4) infinite; /* Animation de marche avec plusieurs étapes */
+    }
+
+    #grandmother {
+      position: absolute;
+    }
+
+    #girl {
+      position: absolute;
+      left: 28%; 
+    }
+
+    /* Animation de marche */
+    @keyframes walking {
+      0% {
+        transform: translateY(0); /* Position initiale */
+      }
+      25% {
+        transform: translateY(5px); /* Légère avancée */
+      }
+      50% {
+        transform: translateY(0); /* Position de marche médiane */
+      }
+      75% {
+        transform: translateY(-5px); /* Retour à la position de départ */
+      }
+      100% {
+        transform: translateY(0); /* Retour à la position initiale */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery-title">Galerie de la Casbah</div>
+
+  <div class="scroll-container" id="scrollContainer">
+    <img src="./Images/Image1.jpeg" alt="Casbah">
+    <img src="./Images/Image2.jpeg" alt="Tattoo Tradition">
+    <img src="./Images/Image3.jpeg" alt="Gold Tooth">
+    <img src="./Images/Image4.jpeg" alt="Traditional Jewelry">
+    <img src="./Images/Image5.jpeg" alt="Old Algerian Women">
+  </div>
+
+  <!-- Calque pour les personnages -->
+  <div class="characters">
+    <img src="./Images/grandma_face.png" alt="Grandmother Front" class="character" id="grandmother">
+    <img src="./Images/fille_face.png" alt="Girl Front" class="character" id="girl">
+  </div>
+
+  <!-- Flèches pour contrôler le défilement -->
+  <button class="arrow arrow-left" id="arrowLeft">&#8249;</button>
+  <button class="arrow arrow-right" id="arrowRight">&#8250;</button>
+
+  
+  <!-- <audio id="backgroundMusic" loop autoplay>
+    <source src="./ChaabiAudio.mp3" type="audio/mpeg">
+    Votre navigateur ne supporte pas la lecture audio.
+  </audio> -->
+
+  <script>
+    const scrollContainer = document.getElementById('scrollContainer');
+    const arrowLeft = document.getElementById('arrowLeft');
+    const arrowRight = document.getElementById('arrowRight');
+    const grandmother = document.getElementById('grandmother');
+    const girl = document.getElementById('girl');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+
+    // Variables pour suivre l'état du défilement
+    const totalImages = 5;
+    let currentIndex = 0;
+
+    // Chemins des différentes vues des personnages
+    const views = {
+      grandmother: [
+        './Images/grandma_face.png',
+        './Images/grandma_droite.png'
+      ],
+      girl: [
+        './Images/fille_face.png',
+        './Images/fille_droite.png'
+      ]
+    };
+
+    // Fonction pour mettre à jour la position et changer les vues
+    function updateScroll() {
+      const translateValue = -currentIndex * 100; // Chaque image occupe 100% de la largeur
+      scrollContainer.style.transform = `translateX(${translateValue}vw)`;
+
+      // Mettre à jour les personnages selon l'image
+      grandmother.src = views.grandmother[currentIndex % views.grandmother.length];
+      girl.src = views.girl[currentIndex % views.girl.length];
+    }
+
+    // Défilement vers la gauche
+    arrowLeft.addEventListener('click', () => {
+      currentIndex = Math.max(0, currentIndex - 1);
+      updateScroll();
+    });
+
+    // Défilement vers la droite
+    arrowRight.addEventListener('click', () => {
+      currentIndex = Math.min(totalImages - 1, currentIndex + 1);
+      updateScroll();
+    });
+  </script>
+</body>
+</html>
