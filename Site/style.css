@@ -1,0 +1,73 @@
+/* Style général de la page */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+    overflow: hidden; /* Empêche le scroll */
+  }
+  
+  /* Le conteneur du carrousel prend toute la page */
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* Le carrousel lui-même s'affiche en flex pour disposer les items en ligne */
+  .carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Chaque élément du carrousel remplit toute la largeur et hauteur de la fenêtre */
+  .carousel-item {
+    flex: 0 0 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Images de fond adaptées à l'écran */
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Remplir toute la zone sans déformer l'image */
+    object-position: center;
+  }
+  
+  /* Style des boutons de navigation */
+  button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+    display: block; /* Assurez-vous que les boutons sont visibles au début */
+  }
+  
+  button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .prev {
+    left: 10px;
+  }
+  
+  .next {
+    right: 10px;
+  }
+  
