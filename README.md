@@ -1,3 +1,3 @@
 # EditoAlgerie
-Test pour le projet: https://kchanez.github.io/EditoAlgerie/pageAccueil.html
+Test pour le projet: https://Kchanez.github.com/EditoAlgerie/pageAccueil.html
 
