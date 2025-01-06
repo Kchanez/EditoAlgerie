@@ -3,140 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Test.css">
   <title>Casbah Scroll Gallery</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      font-family: 'Georgia', serif;
-      background-color: #f3efe4; /* Couleur beige rappelant l'époque */
-    }
-
-    .scroll-container {
-      display: flex;
-      width: 500%; /* 5 images */
-      transform: translateX(0);
-      transition: transform 0.5s ease-in-out;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-      border: 8px solid #8b572a;
-    }
-
-    .scroll-container img {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-    }
-
-    .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 50px;
-      color: #fff;
-      background: linear-gradient(145deg, #8b572a, #5a3820);
-      border: 3px solid #5a3820;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .arrow:hover {
-      transform: translateY(-50%) scale(1.2);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .arrow-left {
-      left: 15px;
-    }
-
-    .arrow-right {
-      right: 15px;
-    }
-
-    .arrow:active {
-      transform: translateY(-50%) scale(1.1);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .gallery-title {
-      z-index: 1;
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 28px;
-      font-weight: bold;
-      color: #5a3820;
-      background-color: rgba(251, 243, 224, 0.8);
-      padding: 10px 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Personnages animés */
-    .characters {
-        width: 20%;
-        position: fixed;
-        bottom: 28%;
-        left: 6%;
-        display: flex;
-        height: auto;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .character {
-      width: 100%; /* Taille ajustée */
-      height: auto;
-      animation: walking 1s steps(4) infinite; /* Animation de marche avec plusieurs étapes */
-    }
-
-    #grandmother {
-      position: absolute;
-    }
-
-    #girl {
-      position: absolute;
-      left: 28%; 
-    }
-
-    /* Animation de marche */
-    @keyframes walking {
-      0% {
-        transform: translateY(0); /* Position initiale */
-      }
-      25% {
-        transform: translateY(5px); /* Légère avancée */
-      }
-      50% {
-        transform: translateY(0); /* Position de marche médiane */
-      }
-      75% {
-        transform: translateY(-5px); /* Retour à la position de départ */
-      }
-      100% {
-        transform: translateY(0); /* Retour à la position initiale */
-      }
-    }
-
-  </style>
 </head>
 <body>
   <div class="gallery-title">Galerie de la Casbah</div>
 
   <div class="scroll-container" id="scrollContainer">
     <img src="./Images/Image1.jpeg" alt="Casbah">
+    <img src="./Images/2.jpg" alt="Casbah">
     <img src="./Images/Image2.jpeg" alt="Tattoo Tradition">
+    <!-- <img src="./Images/Couloir.jpg" alt="Tattoo Tradition"> -->
+    <img src="./Images/4.jpg" alt="Casbah">
     <img src="./Images/Image3.jpeg" alt="Gold Tooth">
-    <img src="./Images/Image4.jpeg" alt="Traditional Jewelry">
-    <img src="./Images/Image5.jpeg" alt="Old Algerian Women">
+    <img src="./Images/3.jpeg" alt="plante"> 
+    <img src="./Images/chambre.svg" alt="chambre">
+    <img id="armoireToggle" class="armoire" src="./Images/Armoire.svg" alt="Armoir">
+    <img class="coffre" src="./Images/Coffre.svg" alt="coffre">
   </div>
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <img id="popupImage" src="./Images/Armoire.svg" alt="Armoire ouverte" />
+      <button id="closePopup" class="close-btn">Fermer</button>
+    </div>
+  </div>
+  
+  <!-- Ton autre contenu ici -->
+  
 
   <!-- Calque pour les personnages -->
   <div class="characters">
@@ -193,5 +86,34 @@
       updateScroll();
     });
   </script>
+
+<script>
+  const armoireToggle = document.getElementById('armoireToggle');
+  const popup = document.getElementById('popup');
+  const closePopup = document.getElementById('closePopup');
+  const popupImage = document.getElementById('popupImage');
+
+  const armoireImages = {
+    closed: './Images/Armoire.svg', // Image fermée
+    open: './Images/armoire 1.svg',  // Image ouverte
+  };
+  let isArmoireOpen = false;
+  armoireToggle.addEventListener('click', () => {
+    isArmoireOpen = !isArmoireOpen;
+    popupImage.src = isArmoireOpen ? armoireImages.open : armoireImages.closed;
+    if (isArmoireOpen) {
+      popup.style.display = 'flex';
+    } else {
+      popup.style.display = 'none'; 
+    }
+    console.log(isArmoireOpen ? 'Armoire ouverte dans le pop-up' : 'Armoire fermée');
+  });
+
+  closePopup.addEventListener('click', () => {
+    popup.style.display = 'none'; 
+  });
+
+</script>
+
 </body>
 </html>
