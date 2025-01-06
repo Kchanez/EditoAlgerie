@@ -1,4 +1,4 @@
 # EditoAlgerie
 
 
-Site final https://Kchanez.github.io/EditoAlgerie/site/test.html
+Site final https://Kchanez.github.io/EditoAlgerie/Site/test.html
