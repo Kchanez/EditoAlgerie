@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Novel</title>
+    <style>
+        body {
+            margin: 0;
+            overflow-y: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        #scene {
+            position: relative;
+            /* Largeur de la scène */
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+        }
+
+        #background {
+            background-image: url('background.jpg');
+            z-index: 1;
+        }
+
+        #character {
+            position: absolute;
+            bottom: 10%;
+            /* Ajustez selon votre scène */
+            left: 50%;
+            /* Initialement au centre */
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        #dialogue {
+            position: absolute;
+            bottom: 5%;
+            left: 10%;
+            right: 10%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+            visibility: hidden;
+            z-index: 100;
+
+            /* Caché par défaut */
+        }
+
+        #static {
+            top: 0;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+
+
+        .characters {
+            position: relative;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .grandmere,
+        .fille {
+            position: absolute;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+
+        }
+
+        .grandmere img,
+        .fille img {
+            height: 100%;
+        }
+
+        .grandmere {
+            z-index: 1;
+            /* Derrière .fille */
+        }
+
+        .fille {
+            z-index: 2;
+            /* Devant .grandmere */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="scene">
+        <img src="background.jpg">
+    </div>
+
+    <div id="static">
+        <div class="characters">
+            <div class="grandmere">
+                <img id="grandma-sprite" src="/persos/grandma/grandma.png" alt="Grandmother">
+            </div>
+            <div class="fille character">
+                <img id="girl-sprite" src="/persos/girl/girl-1.png" alt="Girl">
+            </div>
+        </div>
+
+        <div id="dialogue">
+
+        </div>
+
+    </div>
+
+    <script>
+
+
+    </script>
+
+    <script>
+        //Gestion des événements au scroll
+        const events = [
+            { trigger: 500, action: () => showDialogue("Quelque chose approche...") },
+            { trigger: 1000, action: () => changeCharacterSprite("character_angry.png") },
+            { trigger: 1500, action: () => playSound("suspense.mp3") },
+        ];
+
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollX;
+
+            events.forEach(event => {
+                if (!event.triggered && scrollPosition >= event.trigger) {
+                    event.action();
+                    event.triggered = true; // Empêche de déclencher l'événement plusieurs fois
+                }
+            });
+        });
+
+        function showDialogue(text) {
+            const dialogueBox = document.getElementById('dialogue');
+            dialogueBox.textContent = text;
+            dialogueBox.style.visibility = 'visible';
+        }
+
+
+        function playSound(audioFile) {
+            const audio = new Audio(audioFile);
+            audio.play();
+        }
+
+    </script>
+
+    <script>
+        // Images initiales
+        const girlInit = "/persos/girl/girl-1.png";
+        const grandmaInit = "/persos/grandma/grandma.png";
+
+        // Frames des animations
+        const girlFrames = [
+            "/persos/girl/frame1.png",
+            "/persos/girl/frame2.png",
+            "/persos/girl/frame3.png",
+            "/persos/girl/frame4.png",
+        ];
+
+        const grandmaFrames = [
+            "/persos/grandma/frame1.png",
+            "/persos/grandma/frame2.png",
+        ];
+
+        let lastScrollPosition = 0;
+
+        // Précharge les images
+        function preloadImages(frames) {
+            frames.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        }
+
+        preloadImages(girlFrames);
+        preloadImages(grandmaFrames);
+
+        const girlSprite = document.getElementById("girl-sprite");
+        const grandmaSprite = document.getElementById("grandma-sprite");
+
+        const totalGirlFrames = girlFrames.length;
+        const totalGrandmaFrames = grandmaFrames.length;
+
+        function updateAnimation() {
+            const scrollPosition = window.scrollX;
+
+            const direction = scrollPosition > lastScrollPosition ? 1 : -1;
+            lastScrollPosition = scrollPosition;
+
+            // Applique le flip selon la direction
+            //girlSprite.style.transform = `scaleX(${direction})`;
+            //grandmaSprite.style.transform = `scaleX(${direction})`;
+
+            // Calcule l'index de la frame à afficher pour chaque sprite
+            const girlFrameIndex = Math.floor((scrollPosition / window.innerWidth) * totalGirlFrames) % totalGirlFrames;
+            const grandmaFrameIndex = Math.floor((scrollPosition / window.innerWidth) * totalGrandmaFrames) % totalGrandmaFrames;
+
+            girlSprite.src = girlFrames[girlFrameIndex];
+            grandmaSprite.src = grandmaFrames[grandmaFrameIndex];
+
+            resetScrollStopTimer();
+        }
+
+        // Timer pour revenir aux images initiales à l'arrêt du scroll
+        let scrollStopTimer;
+        function resetScrollStopTimer() {
+            clearTimeout(scrollStopTimer);
+            scrollStopTimer = setTimeout(() => {
+                // Retourne aux images initiales
+                girlSprite.src = girlInit;
+                grandmaSprite.src = grandmaInit;
+            }, 150); // Temps après lequel on considère que le scroll s'est arrêté
+        }
+
+        // Événement de scroll
+        window.addEventListener("scroll", () => {
+            updateAnimation();
+        });
+    </script>
+
+</body>
+
+</html>
