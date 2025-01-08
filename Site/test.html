@@ -7,7 +7,7 @@
   <title>Casbah Scroll Gallery</title>
 </head>
 <body>
-  <div class="gallery-title">Galerie de la Casbah</div>
+  <!-- <div class="gallery-title">Galerie de la Casbah</div> -->
 
   <div class="scroll-container" id="scrollContainer">
     <img src="./Images/Image1.jpeg" alt="Casbah">
@@ -22,14 +22,29 @@
     <img id="armoireToggle" class="armoire" src="./Images/Armoire.svg" alt="Armoir">
     <img class="coffre" src="./Images/Coffre.svg" alt="coffre">
   </div>
+  <!-- Pop up de l'armoire -->
   <div id="popup" class="popup">
     <div class="popup-content">
       <img id="popupImage" src="./Images/Armoire.svg" alt="Armoire ouverte" />
       <button id="closePopup" class="close-btn">Fermer</button>
     </div>
   </div>
+  <!-- Pop up du cadre -->
+  <div id="popupFamily" class="popup" style="display: none;">
+    <div class="popup-content">
+      <button id="closePopupFamily" class="close-btn">&times;</button>
+      <div class="popup-image-wrapper">
+        <button id="prevImage" class="nav-btn">&lt;</button>
+        <img id="currentImage" src="" alt="Image familiale" />
+        <button id="nextImage" class="nav-btn">&gt;</button>
+      </div>
+      <p id="popupFamilyDescription" class="popup-description"></p>
+    </div>
+  </div>
+  <img class="CadreFamille" src="./Images/CadreFamille.svg" alt="Cadre Famille">
   
-  <!-- Ton autre contenu ici -->
+
+
   
 
   <!-- Calque pour les personnages -->
@@ -41,7 +56,7 @@
   <!-- Flèches pour contrôler le défilement -->
   <button class="arrow arrow-left" id="arrowLeft">&#8249;</button>
   <button class="arrow arrow-right" id="arrowRight">&#8250;</button>
-
+  <!-- script du scroll -->
   <script>
     const scrollContainer = document.getElementById('scrollContainer');
     const arrowLeft = document.getElementById('arrowLeft');
@@ -87,34 +102,66 @@
       updateScroll();
     });
   </script>
+  <!-- script de pop up armoir -->
+  <script>
+      // Sélection des éléments DOM
+const cadreFamilleToggle = document.querySelector('.CadreFamille');
+const popupFamily = document.getElementById('popupFamily');
+const closePopupFamily = document.getElementById('closePopupFamily');
+const currentImage = document.getElementById('currentImage');
+const prevImageBtn = document.getElementById('prevImage');
+const nextImageBtn = document.getElementById('nextImage');
+const popupFamilyDescription = document.getElementById('popupFamilyDescription');
 
-<script>
-  const armoireToggle = document.getElementById('armoireToggle');
-  const popup = document.getElementById('popup');
-  const closePopup = document.getElementById('closePopup');
-  const popupImage = document.getElementById('popupImage');
+// Détails de la galerie
+const cadreFamilleDetails = {
+  images: [
+    './Images/CadreFamille.svg',
+    './Images/Cadre1.svg',
+    './Images/Cadre2.svg',
+    './Images/Cadre3.svg',
+    './Images/Cadre4.svg'
+  ],
+  description: 'Voici une collection de photos de famille.'
+};
 
-  const armoireImages = {
-    closed: './Images/Armoire.svg', // Image fermée
-    open: './Images/armoire 1.svg',  // Image ouverte
-  };
-  let isArmoireOpen = false;
-  armoireToggle.addEventListener('click', () => {
-    isArmoireOpen = !isArmoireOpen;
-    popupImage.src = isArmoireOpen ? armoireImages.open : armoireImages.closed;
-    if (isArmoireOpen) {
-      popup.style.display = 'flex';
-    } else {
-      popup.style.display = 'none'; 
-    }
-    console.log(isArmoireOpen ? 'Armoire ouverte dans le pop-up' : 'Armoire fermée');
-  });
+// Index de l'image actuelle
+let currentImageIndex = 0;
 
-  closePopup.addEventListener('click', () => {
-    popup.style.display = 'none'; 
-  });
+// Fonction pour mettre à jour l'image affichée
+function updateCurrentImage() {
+  currentImage.src = cadreFamilleDetails.images[currentImageIndex];
+}
 
-</script>
+// Gérer l'ouverture du pop-up
+cadreFamilleToggle.addEventListener('click', () => {
+  currentImageIndex = 0; // Réinitialise à la première image
+  console.log();
+  updateCurrentImage();
+  popupFamilyDescription.textContent = cadreFamilleDetails.description; // Ajoute la description
+  popupFamily.style.display = 'flex'; // Affiche le pop-up
+});
 
+// Gérer la navigation vers l'image précédente
+prevImageBtn.addEventListener('click', () => {
+  if (currentImageIndex > 0) {
+    currentImageIndex--;
+    updateCurrentImage();
+  }
+});
+
+// Gérer la navigation vers l'image suivante
+nextImageBtn.addEventListener('click', () => {
+  if (currentImageIndex < cadreFamilleDetails.images.length - 1) {
+    currentImageIndex++;
+    updateCurrentImage();
+  }
+});
+
+// Gérer la fermeture du pop-up
+closePopupFamily.addEventListener('click', () => {
+  popupFamily.style.display = 'none'; // Cache le pop-up
+});
+  </script>
 </body>
 </html>
