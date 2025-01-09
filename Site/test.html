@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="Test.css">
   <title>Casbah Scroll Gallery</title>
 </head>
+
 <body>
   <div class="gallery-title">Galerie de la Casbah</div>
 
@@ -15,7 +17,11 @@
     <img src="./Images/Image2.jpeg" alt="Tattoo Tradition">
     <img src="./Images/4.jpg" alt="Casbah">
     <img src="./Images/Image3.jpeg" alt="Gold Tooth">
+<<<<<<< HEAD
     <img src="./Images/3.jpeg" alt="plante"> 
+=======
+    <img src="./Images/3.jpeg" alt="plante">
+>>>>>>> Justine2
     <img src="./Images/chambre.svg" alt="chambre">
     <img class="Etiquette" src="./Images/Etiquette.svg" alt="Etiquette">
     <img class="CadreFamille" src="./Images/CadreFamille.svg" alt="CadreFamille">
@@ -28,9 +34,15 @@
       <button id="closePopup" class="close-btn">Fermer</button>
     </div>
   </div>
+<<<<<<< HEAD
   
   <!-- Ton autre contenu ici -->
   
+=======
+
+  <!-- Ton autre contenu ici -->
+
+>>>>>>> Justine2
 
   <!-- Calque pour les personnages -->
   <div class="characters">
@@ -88,6 +100,7 @@
     });
   </script>
 
+<<<<<<< HEAD
 <script>
   const armoireToggle = document.getElementById('armoireToggle');
   const popup = document.getElementById('popup');
@@ -115,6 +128,36 @@
   });
 
 </script>
+=======
+  <script>
+    const armoireToggle = document.getElementById('armoireToggle');
+    const popup = document.getElementById('popup');
+    const closePopup = document.getElementById('closePopup');
+    const popupImage = document.getElementById('popupImage');
+
+    const armoireImages = {
+      closed: './Images/Armoire.svg', // Image fermée
+      open: './Images/armoire 1.svg',  // Image ouverte
+    };
+    let isArmoireOpen = false;
+    armoireToggle.addEventListener('click', () => {
+      isArmoireOpen = !isArmoireOpen;
+      popupImage.src = isArmoireOpen ? armoireImages.open : armoireImages.closed;
+      if (isArmoireOpen) {
+        popup.style.display = 'flex';
+      } else {
+        popup.style.display = 'none';
+      }
+      console.log(isArmoireOpen ? 'Armoire ouverte dans le pop-up' : 'Armoire fermée');
+    });
+
+    closePopup.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+
+  </script>
+>>>>>>> Justine2
 
 </body>
+
 </html>
