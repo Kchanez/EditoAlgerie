@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidéo de notre projet sur l'éxposition virtuelle</title>
+    <link rel="stylesheet" href="style.css">
+
+<style>
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            height: 100%;
+        }
+
+        body {
+            background-color: #f4f1e1; /* Fond vintage beige clair */
+            color: #333; /* Couleur de texte plus douce */
+            padding: 20px;
+        }
+
+        /* Menu principal */
+        .accueil {
+            position: fixed;
+            top: 1%;
+            left: 0;
+            width: 200px;
+            background-color: #7f6b4e;
+            color: white;
+            border-radius: 5px 0 0 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+        }
+
+        .bouton {
+            display: block;
+            padding: 15px;
+            background-color: #BC8F8F;
+            border: none;
+            color: black;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .bouton:hover {
+            background-color: #FDF5E6;
+        }
+
+        .Menu {
+            display: none;
+        }
+
+        .contenu {
+            display: none;
+            background-color: #333;
+            padding: 10px;
+        }
+
+        .contenu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .contenu ul li {
+            margin: 10px 0;
+        }
+
+        .contenu ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .contenu ul li a:hover {
+            color: #FF9966;
+        }
+
+        .Menu:checked + .contenu {
+            display: block;
+        }
+</style>
+</head>
+
+
+<body>
+<header>
+    <a href="pageAccueil.html" style="text-decoration: none; color: black; background-color: #BC8F8F; padding: 10px; margin: 10px; display: inline-block; border-radius: 5px;">Retour à Accueil</a>
+</header>
+
+  <!-- Boîte Bannière Latérale -->
+    <div class="accueil">
+        <label for="menu" class="bouton">☰ Menu</label>
+        <input type="checkbox" id="menu" class="Menu">
+        <div class="contenu">
+            <ul>
+                <li><a href="pageAccueil.html">Accueil</a></li>
+                <li><a href="paraVirt.html">Exposition virtuelle</a></li>
+                <li><a href="galeries.html">Galeries</a></li>
+                 <li><a href="vidéo.html">Vidéo</a></li>
+                <li><a href="projet.html">Notre projet</a></li>
+            </ul>
+        </div>
+    </div>
+   </body>
+</html>
