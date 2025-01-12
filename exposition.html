@@ -16,7 +16,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-
         }
 
         #scene {
@@ -53,8 +52,6 @@
             border-radius: 10px;
             visibility: hidden;
             z-index: 100;
-
-            /* Caché par défaut */
         }
 
         #static {
@@ -64,8 +61,6 @@
             height: 100vh;
             overflow: hidden;
         }
-
-
 
         .characters {
             position: relative;
@@ -81,7 +76,6 @@
             top: 0;
             width: 100vw;
             height: 100vh;
-
         }
 
         .grandmere img,
@@ -116,25 +110,56 @@
             </div>
         </div>
 
-        <div id="dialogue">
-
-        </div>
-
+        <div id="dialogue"></div>
     </div>
 
     <script>
-
-
-    </script>
-
-    <script>
-        //Gestion des événements au scroll
+        // Gestion des événements au scroll
         const events = [
-            { trigger: 500, action: () => showDialogue("Quelque chose approche...") },
-            { trigger: 1000, action: () => changeCharacterSprite("character_angry.png") },
-            { trigger: 1500, action: () => playSound("suspense.mp3") },
+            { 
+                trigger: 500, 
+                action: () => startDialogue([
+                    "Réplique 1 - Parie 1",
+                    "Réplique 2 - Parie 1",
+                    "Réplique 3 - Parie 1"
+                ]) 
+            },
+            { 
+                trigger: 1000, 
+                action: () => changeCharacterSprite("character_angry.png") 
+            },
+            { 
+                trigger: 1500, 
+                action: () => playSound("suspense.mp3") 
+            },
         ];
 
+        let currentDialogueIndex = 0;  // Garde la trace de la réplique actuelle
+
+        // Fonction pour afficher un dialogue avec des répliques
+        function startDialogue(dialogues) {
+            // Cache la boîte de dialogue avant de commencer
+            const dialogueBox = document.getElementById('dialogue');
+            dialogueBox.textContent = dialogues[currentDialogueIndex];
+            dialogueBox.style.visibility = 'visible';
+
+            // Attente d'un clic pour passer à la réplique suivante
+            dialogueBox.addEventListener('click', function nextDialogue() {
+                currentDialogueIndex++;
+                
+                // Si il y a encore des répliques, on les affiche
+                if (currentDialogueIndex < dialogues.length) {
+                    dialogueBox.textContent = dialogues[currentDialogueIndex];
+                } else {
+                    // Si toutes les répliques sont affichées, on cache la boîte de dialogue
+                    dialogueBox.style.visibility = 'hidden';
+                    currentDialogueIndex = 0;  // Réinitialisation pour la prochaine série de dialogues
+                    dialogueBox.removeEventListener('click', nextDialogue); // Enlever l'événement après la fin du dialogue
+                }
+            });
+        }
+
+        // Fonction pour déclencher un événement lors du scroll
         window.addEventListener('scroll', () => {
             const scrollPosition = window.scrollX;
 
@@ -152,15 +177,11 @@
             dialogueBox.style.visibility = 'visible';
         }
 
-
         function playSound(audioFile) {
             const audio = new Audio(audioFile);
             audio.play();
         }
 
-    </script>
-
-    <script>
         // Images initiales
         const girlInit = "/persos/girl/girl-1.png";
         const grandmaInit = "/persos/grandma/grandma.png";
@@ -202,10 +223,6 @@
 
             const direction = scrollPosition > lastScrollPosition ? 1 : -1;
             lastScrollPosition = scrollPosition;
-
-            // Applique le flip selon la direction
-            //girlSprite.style.transform = `scaleX(${direction})`;
-            //grandmaSprite.style.transform = `scaleX(${direction})`;
 
             // Calcule l'index de la frame à afficher pour chaque sprite
             const girlFrameIndex = Math.floor((scrollPosition / window.innerWidth) * totalGirlFrames) % totalGirlFrames;
