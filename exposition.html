@@ -20,7 +20,6 @@
 
         #scene {
             position: relative;
-            /* Largeur de la scène */
             height: 100vh;
             display: flex;
             flex-direction: row;
@@ -34,24 +33,42 @@
         #character {
             position: absolute;
             bottom: 10%;
-            /* Ajustez selon votre scène */
             left: 50%;
-            /* Initialement au centre */
             transition: transform 0.3s ease;
             z-index: 100;
         }
 
-        #dialogue {
+        #dialogue-container {
             position: absolute;
             bottom: 5%;
             left: 10%;
             right: 10%;
+            display: flex;
+            align-items: center;
             padding: 20px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
             border-radius: 10px;
             visibility: hidden;
             z-index: 100;
+        }
+
+        #dialogue {
+            flex: 1;
+            padding-left: 20px;
+        }
+
+        #speaker-image {
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            bottom: 5%;
+            left: 10%;
+            z-index: 101;
+            margin-left: -60px;
         }
 
         #static {
@@ -85,12 +102,14 @@
 
         .grandmere {
             z-index: 1;
-            /* Derrière .fille */
         }
 
         .fille {
             z-index: 2;
-            /* Devant .grandmere */
+        }
+
+        .dialogue-box {
+            display: flex;
         }
     </style>
 </head>
@@ -110,83 +129,80 @@
             </div>
         </div>
 
-        <div id="dialogue"></div>
+        <div class="dialogue-box">
+            <div id="speaker-image"></div>
+
+            <div id="dialogue-container">
+                <div id="dialogue"></div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // Gestion des événements au scroll
         const events = [
-            { 
-                trigger: 500, 
+            {
+                trigger: 5,
                 action: () => startDialogue([
-                    "Réplique 1 - Parie 1",
-                    "Réplique 2 - Parie 1",
-                    "Réplique 3 - Parie 1"
-                ]) 
-            },
-            { 
-                trigger: 1000, 
-                action: () => changeCharacterSprite("character_angry.png") 
-            },
-            { 
-                trigger: 1500, 
-                action: () => playSound("suspense.mp3") 
-            },
+                    { speaker: "girl", text: "Quelque chose approche..." },
+                    { speaker: "grandma", text: "Je ne sais pas ce que c'est..." },
+                    { speaker: "girl", text: "Reste sur tes gardes !" }
+                ])
+            }
         ];
 
-        let currentDialogueIndex = 0;  // Garde la trace de la réplique actuelle
+        let currentDialogueIndex = 0;
 
-        // Fonction pour afficher un dialogue avec des répliques
         function startDialogue(dialogues) {
-            // Cache la boîte de dialogue avant de commencer
             const dialogueBox = document.getElementById('dialogue');
-            dialogueBox.textContent = dialogues[currentDialogueIndex];
-            dialogueBox.style.visibility = 'visible';
+            const speakerImage = document.getElementById('speaker-image');
+            const dialogueContainer = document.getElementById('dialogue-container');
 
-            // Attente d'un clic pour passer à la réplique suivante
+            showDialogue(dialogues[currentDialogueIndex]);
+
             dialogueBox.addEventListener('click', function nextDialogue() {
                 currentDialogueIndex++;
-                
-                // Si il y a encore des répliques, on les affiche
+
                 if (currentDialogueIndex < dialogues.length) {
-                    dialogueBox.textContent = dialogues[currentDialogueIndex];
+                    showDialogue(dialogues[currentDialogueIndex]);
                 } else {
-                    // Si toutes les répliques sont affichées, on cache la boîte de dialogue
-                    dialogueBox.style.visibility = 'hidden';
-                    currentDialogueIndex = 0;  // Réinitialisation pour la prochaine série de dialogues
-                    dialogueBox.removeEventListener('click', nextDialogue); // Enlever l'événement après la fin du dialogue
+                    dialogueContainer.style.visibility = 'hidden';
+                    currentDialogueIndex = 0;
+                    dialogueBox.removeEventListener('click', nextDialogue);
                 }
+            });
+
+            function showDialogue(dialogue) {
+                dialogueContainer.style.visibility = 'visible';
+                typeText(dialogue.text);
+
+                if (dialogue.speaker === 'girl') {
+                    speakerImage.style.backgroundImage = "url('/persos/girl/girl-1.png')";
+                } else if (dialogue.speaker === 'grandma') {
+                    speakerImage.style.backgroundImage = "url('/persos/grandma/grandma.png')";
+                }
+            }
+
+            function typeText(text) {
+                let i = 0;
+                dialogueBox.textContent = "";
+                const typingInterval = setInterval(() => {
+                    dialogueBox.textContent += text[i];
+                    i++;
+                    if (i >= text.length) {
+                        clearInterval(typingInterval);
+                    }
+                }, 50);
+            }
+        }
+
+        function preloadImages(frames) {
+            frames.forEach(src => {
+                const img = new Image();
+                img.src = src;
             });
         }
 
-        // Fonction pour déclencher un événement lors du scroll
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollX;
-
-            events.forEach(event => {
-                if (!event.triggered && scrollPosition >= event.trigger) {
-                    event.action();
-                    event.triggered = true; // Empêche de déclencher l'événement plusieurs fois
-                }
-            });
-        });
-
-        function showDialogue(text) {
-            const dialogueBox = document.getElementById('dialogue');
-            dialogueBox.textContent = text;
-            dialogueBox.style.visibility = 'visible';
-        }
-
-        function playSound(audioFile) {
-            const audio = new Audio(audioFile);
-            audio.play();
-        }
-
-        // Images initiales
-        const girlInit = "/persos/girl/girl-1.png";
-        const grandmaInit = "/persos/grandma/grandma.png";
-
-        // Frames des animations
         const girlFrames = [
             "/persos/girl/frame1.png",
             "/persos/girl/frame2.png",
@@ -199,16 +215,6 @@
             "/persos/grandma/frame2.png",
         ];
 
-        let lastScrollPosition = 0;
-
-        // Précharge les images
-        function preloadImages(frames) {
-            frames.forEach(src => {
-                const img = new Image();
-                img.src = src;
-            });
-        }
-
         preloadImages(girlFrames);
         preloadImages(grandmaFrames);
 
@@ -218,13 +224,14 @@
         const totalGirlFrames = girlFrames.length;
         const totalGrandmaFrames = grandmaFrames.length;
 
+        let lastScrollPosition = 0;
+
         function updateAnimation() {
             const scrollPosition = window.scrollX;
 
             const direction = scrollPosition > lastScrollPosition ? 1 : -1;
             lastScrollPosition = scrollPosition;
 
-            // Calcule l'index de la frame à afficher pour chaque sprite
             const girlFrameIndex = Math.floor((scrollPosition / window.innerWidth) * totalGirlFrames) % totalGirlFrames;
             const grandmaFrameIndex = Math.floor((scrollPosition / window.innerWidth) * totalGrandmaFrames) % totalGrandmaFrames;
 
@@ -234,21 +241,30 @@
             resetScrollStopTimer();
         }
 
-        // Timer pour revenir aux images initiales à l'arrêt du scroll
         let scrollStopTimer;
         function resetScrollStopTimer() {
             clearTimeout(scrollStopTimer);
             scrollStopTimer = setTimeout(() => {
-                // Retourne aux images initiales
-                girlSprite.src = girlInit;
-                grandmaSprite.src = grandmaInit;
-            }, 150); // Temps après lequel on considère que le scroll s'est arrêté
+                girlSprite.src = "/persos/girl/girl-1.png";
+                grandmaSprite.src = "/persos/grandma/grandma.png";
+            }, 150);
         }
 
-        // Événement de scroll
         window.addEventListener("scroll", () => {
             updateAnimation();
         });
+
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollX;
+
+            events.forEach(event => {
+                if (!event.triggered && scrollPosition >= event.trigger) {
+                    event.action();
+                    event.triggered = true;
+                }
+            });
+        });
+
     </script>
 
 </body>
