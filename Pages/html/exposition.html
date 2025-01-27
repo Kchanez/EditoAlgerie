@@ -116,16 +116,16 @@
 
 <body>
     <div id="scene">
-        <img src="background.jpg">
+        <img src="Images/backgrounds/background.jpg">
     </div>
 
     <div id="static">
         <div class="characters">
             <div class="grandmere">
-                <img id="grandma-sprite" src="/persos/grandma/grandma.png" alt="Grandmother">
+                <img id="grandma-sprite" src="Images/persos/grandma/grandma.png" alt="Grandmother">
             </div>
             <div class="fille character">
-                <img id="girl-sprite" src="/persos/girl/girl-1.png" alt="Girl">
+                <img id="girl-sprite" src="Images/persos/girl/girl-1.png" alt="Girl">
             </div>
         </div>
 
@@ -144,35 +144,11 @@
             {
                 trigger: 5,
                 action: () => startDialogue([
-<<<<<<< HEAD
                     { speaker: "girl", text: "Quelque chose approche..." },
                     { speaker: "grandma", text: "Je ne sais pas ce que c'est..." },
                     { speaker: "girl", text: "Reste sur tes gardes !" }
                 ])
             }
-=======
-                    "Petite-fille: Grandma, pourquoi tu as un tatouage sur ton front et moi non ? je veux en avoir un aussi",
-                    "Grandma: Ah ma petite, tu es si attentive et si curieuse (RIRE), tu veux savoir pourquoi j’ai ce petit tatouage et toi non ? Mais non petite, toi tu ne peux pas te tatouer le front à cet âge là, tu es encore petite. Et je pense qu’il est temps de te raconter quelques trucs sur les traditions et les coutumes de la femme algérienne pour que tu saches ce qui est fait pour les grands et ce qui est fait pour les petits.",
-                    "Petite-fille: oui grandma raconte moi je suis impressionnée de le savoir.",
-                    "Grandma: Eh bien ma fleur, ouvre bien tes oreilles.",
-                    "La narration de la grandma à la petite-fille: “ Dans les siècles précédents, le tatouage chez la femme algérienne était considéré comme un symbole d’appartenance à une tribu et il peut aussi indiquer une identité culturelle. Ce tatouage se gravait sur le front, les joues et le montant. Parfois on trouvait une femme avec un seul tatouage sur le front ou sur le montant et parfois on trouvait une femme qui mettait du tatouage sur ses quatre endroits cités à la fois. Les motifs changeaient selon le souhait de chaque femme. Une petite fille qui n’avait pas encore l'âge qui lui permettait de faire ce tatouage, n’en avait pas le droit. Ce n’est qu’à partir que la fille devient grande ou adulte ou alors elle se marie. Il était souvent utilisé pour que la femme soit belle. Aujourd’hui, cette tradition n’existe plus mais on voit les traces de ces tatouages chez certaines femmes algériennes âgées qui ont vécu à l’époque où le tatouage était permis.",
-                    "Petite-fille: Ayyyy c’est génial ça! Je comprends maintenant pourquoi je ne peux pas mettre du tatouage sur mon visage (RIRE doux), car non seulement je suis petite mais aussi parce que cette tradition n’existe plus aujourd’hui car tout a changé.",
-                    "Grandma: oui ma belle",
-                    "Petite-fille: Mamie, tu as de très belles histoires apparemment (SOURIRE), je veux tout savoir sur la femme algérienne",
-                    "Grandma: Ah tu veux tout savoir sur les traditions et les femmes algériennes ?",
-                    "Petite-fille: oui s’il te plait, mamie, s’il te plait !",
-                    "Grandma: suis-moi alors, je vais te montrer quelque chose que tu vas certainement aimer"
-                ]) 
-            },
-            { 
-                trigger: 1000, 
-                action: () => changeCharacterSprite("character_angry.png") 
-            },
-            { 
-                trigger: 1500, 
-                action: () => playSound("suspense.mp3") 
-            },
->>>>>>> ce534970189c91561d15f3d9432a101f0afbb12f
         ];
 
         let currentDialogueIndex = 0;
@@ -201,9 +177,9 @@
                 typeText(dialogue.text);
 
                 if (dialogue.speaker === 'girl') {
-                    speakerImage.style.backgroundImage = "url('/persos/girl/girl-1.png')";
+                    speakerImage.style.backgroundImage = "url('Images/persos/girl/girl-1.png')";
                 } else if (dialogue.speaker === 'grandma') {
-                    speakerImage.style.backgroundImage = "url('/persos/grandma/grandma.png')";
+                    speakerImage.style.backgroundImage = "url('Images/persos/grandma/grandma-1.png')";
                 }
             }
 
@@ -228,15 +204,15 @@
         }
 
         const girlFrames = [
-            "/persos/girl/frame1.png",
-            "/persos/girl/frame2.png",
-            "/persos/girl/frame3.png",
-            "/persos/girl/frame4.png",
+            "Images/persos/girl/frame1.png",
+            "Images/persos/girl/frame2.png",
+            "Images/persos/girl/frame3.png",
+            "Images/persos/girl/frame4.png",
         ];
 
         const grandmaFrames = [
-            "/persos/grandma/frame1.png",
-            "/persos/grandma/frame2.png",
+            "Images/persos/grandma/frame1.png",
+            "Images/persos/grandma/frame2.png",
         ];
 
         preloadImages(girlFrames);
@@ -269,8 +245,8 @@
         function resetScrollStopTimer() {
             clearTimeout(scrollStopTimer);
             scrollStopTimer = setTimeout(() => {
-                girlSprite.src = "/persos/girl/girl-1.png";
-                grandmaSprite.src = "/persos/grandma/grandma.png";
+                girlSprite.src = "Images/persos/girl/girl-1.png";
+                grandmaSprite.src = "Images/persos/grandma/grandma.png";
             }, 150);
         }
 
