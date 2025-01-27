@@ -261,64 +261,7 @@
     </script>
 
 
-    <script>
-        // function openImageInNewTab() {
-        //     const image = new Image();
-        //     image.src = "chambre.svg";
-
-        //     image.style.width = "100%"; 
-        //     image.style.height = "auto"; 
-        //     image.style.margin = "0px";
-        //     image.style.display ="block";
-
-        //     const newTab = window.open("");
-        //     if (newTab) {
-
-        //         newTab.document.body.style.margin = "0px";
-        //         newTab.document.body.style.padding = "0px";
-        //         newTab.document.body.style.width = "100%";
-        //         newTab.document.body.appendChild(image);
-        //     } else {
-        //         alert("Impossible d'ouvrir la fenêtre.");
-        //     }
-        // }
-
-        // function openImageInNewTab() 
-        // {
-        //     const images = [
-        //         "chambre.svg", 
-        //         "./Armoire.svg", 
-        //         "./Coffre.svg",
-        //         "./Etiquette.svg",
-        //         "./CadreFamille.svg"
-        //     ];
-
-        //     const newTab = window.open("");
-        //     if (newTab) {
-        //         const body = newTab.document.body;
-        //         body.style.margin = "0";
-        //         body.style.padding = "0";
-        //         body.style.width = "100%";
-
-        //         // Ajouter chaque image
-        //         images.forEach(imageSrc => {
-        //             const image = new Image();
-        //             image.src = imageSrc;
-
-        //             image.style.width = "100%"; 
-        //             image.style.height = "auto";
-        //             image.style.display = "block"; 
-        //             image.style.margin = "0 auto"; 
-
-        //             body.appendChild(image);
-        //         });
-        //     } else {
-        //         alert("Impossible d'ouvrir la fenêtre.");
-        //     }
-        // }
-
-
-
+    <!-- <script>
         function openImageInNewTab() {
             const images = [
                 { src: "chambre.svg", isBaseImage: true },  // L'image de base
@@ -355,9 +298,99 @@
                 alert("Impossible d'ouvrir la fenêtre.");
             }
         }
+    </script>   -->
 
+
+    <script>
+        function openImageInNewTab() {
+            const images = [
+                { src: "chambre.svg", isBaseImage: true },  // L'image de base
+                { src: "./Armoire.svg", isBaseImage: false, width: "24%", top: "15%", left: "32%" },
+                { src: "./Coffre.svg", isBaseImage: false, width: "12%", top: "57%", left: "10%" },
+                { src: "./Etiquette.svg", isBaseImage: false, width: "17%", top: "3%", left: "5%" },
+                { src: "./CadreFamille.svg", isBaseImage: false, width: "6%", top: "25%", left: "8.9%" }
+            ];
+
+            const newTab = window.open("");
+            if (newTab) {
+                const body = newTab.document.body;
+                body.style.margin = "0";
+                body.style.padding = "0";
+                body.style.width = "100%";
+                body.style.position = "relative"; // Positionnement relatif pour les superpositions
+
+                // Ajouter les images
+                images.forEach(({ src, isBaseImage, width, top, left }) => {
+                    const image = new Image();
+                    image.src = src;
+
+                    image.style.width = isBaseImage ? "100%" : width;  // L'image de base prend toute la largeur
+                    image.style.height = "auto";
+                    image.style.display = "block";
+                    image.style.position = isBaseImage ? "relative" : "absolute"; // Positionnement absolu pour les superposées
+                    image.style.top = top || "0";
+                    image.style.left = left || "0";
+                    image.style.zIndex = isBaseImage ? "1" : "2"; // L'image de base est en dessous
+
+                    body.appendChild(image);
+
+                    // Ajouter un pop-up pour l'image "Armoire"
+                    if (src === "./Armoire.svg") {
+                        image.style.cursor = "pointer"; // Changer le curseur au survol
+                        image.addEventListener('click', () => {
+                            const popup = newTab.document.createElement('div');
+                            popup.style.position = "fixed";
+                            popup.style.top = "0";
+                            popup.style.left = "0";
+                            popup.style.width = "100%";
+                            popup.style.height = "100%";
+                            popup.style.background = "rgba(0, 0, 0, 0.7)";
+                            popup.style.display = "flex";
+                            popup.style.justifyContent = "center";
+                            popup.style.alignItems = "center";
+                            popup.style.zIndex = "100"; // S'assurer que le pop-up est au-dessus des autres
+
+                            const popupContent = newTab.document.createElement('div');
+                            popupContent.style.position = "relative";
+                            popup.appendChild(popupContent);
+
+                            const popupImage = new Image();
+                            popupImage.src = "./armoireOuverte.svg"; // Image ouverte
+                            popupImage.style.width = "100%";
+                            popupImage.style.height = "auto";
+                            popupContent.appendChild(popupImage);
+
+                            // Ajouter un bouton de fermeture
+                            const closePopup = newTab.document.createElement('button');
+                            closePopup.textContent = "Fermer";
+                            closePopup.style.position = "absolute";
+                            closePopup.style.top = "-8%";
+                            closePopup.style.right = "-4%";
+                            closePopup.style.background = "red";
+                            closePopup.style.color = "white";
+                            closePopup.style.border = "none";
+                            closePopup.style.padding = "10px 20px";
+                            closePopup.style.cursor = "pointer";
+                            closePopup.style.borderRadius = "11px";
+
+                            closePopup.addEventListener('click', () => {
+                                popup.style.display = "none";
+                            });
+
+                            popupContent.appendChild(closePopup);
+
+                            newTab.document.body.appendChild(popup);
+                        });
+                    }
+                });
+            } else {
+                alert("Impossible d'ouvrir la fenêtre.");
+            }
+        }
 
     </script>
+    
+
 </body>
 
 </html>
