@@ -1,0 +1,14 @@
+#background {
+    position: relative;
+    height: 100vh; /* Utilise la hauteur de la fenêtre */
+    display: flex;
+    flex-direction: column; /* Organise les éléments enfants en colonne */
+    align-items: center; /* Centre les éléments horizontalement */
+    justify-content: center; /* Centre les éléments verticalement */
+    background-image: url('../Images/backgrounds/background.jpg'); /* Chemin vers l'image */
+    background-size: cover; /* L'image couvre toute la surface */
+    background-position: center; /* L'image est centrée */
+    background-repeat: no-repeat; /* L'image ne se répète pas */
+    color: white; /* Couleur du texte pour contraster avec l'image de fond */
+    text-align: center; /* Centre le texte */
+}
