@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Novel</title>
+    <style>
+        body {
+            margin: 0;
+            overflow-y: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #scene {
+            position: relative;
+            /* Largeur de la scène */
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+        }
+
+        #background {
+            background-image: url('background.jpg');
+            z-index: 1;
+        }
+
+        #character {
+            position: absolute;
+            bottom: 10%;
+            /* Ajustez selon votre scène */
+            left: 50%;
+            /* Initialement au centre */
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        #dialogue {
+            position: absolute;
+            bottom: 5%;
+            left: 10%;
+            right: 10%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+            visibility: hidden;
+            z-index: 100;
+        }
+
+        #static {
+            top: 0;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .characters {
+            position: relative;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .grandmere,
+        .fille {
+            position: absolute;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .grandmere img,
+        .fille img {
+            height: 100%;
+        }
+
+        .grandmere {
+            z-index: 1;
+            /* Derrière .fille */
+        }
+
+        .fille {
+            z-index: 2;
+            /* Devant .grandmere */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="scene">
+        <img src="background.jpg">
+    </div>
+
+    <div id="static">
+        <div class="characters">
+            <div class="grandmere">
+                <img id="grandma-sprite" src="/persos/grandma/grandma.png" alt="Grandmother">
+            </div>
+            <div class="fille character" onclick="openImageInNewTab()">
+                <img id="girl-sprite" src="/persos/girl/girl-1.png" alt="Girl">
+            </div>
+        </div>
+
+        <div id="dialogue"></div>
+    </div>
+
+    <script>
+        // Gestion des événements au scroll
+        const events = [
+            { 
+                trigger: 500, 
+                action: () => startDialogue([
+                    "Petite-fille: Grandma, pourquoi tu as un tatouage sur ton front et moi non ? je veux en avoir un aussi",
+                    "Grandma: Ah ma petite, tu es si attentive et si curieuse (RIRE), tu veux savoir pourquoi j’ai ce petit tatouage et toi non ? Mais non petite, toi tu ne peux pas te tatouer le front à cet âge là, tu es encore petite. Et je pense qu’il est temps de te raconter quelques trucs sur les traditions et les coutumes de la femme algérienne pour que tu saches ce qui est fait pour les grands et ce qui est fait pour les petits.",
+                    "Petite-fille: oui grandma raconte moi je suis impressionnée de le savoir.",
+                    "Grandma: Eh bien ma fleur, ouvre bien tes oreilles.",
+                    "La narration de la grandma à la petite-fille: “ Dans les siècles précédents, le tatouage chez la femme algérienne était considéré comme un symbole d’appartenance à une tribu et il peut aussi indiquer une identité culturelle. Ce tatouage se gravait sur le front, les joues et le montant. Parfois on trouvait une femme avec un seul tatouage sur le front ou sur le montant et parfois on trouvait une femme qui mettait du tatouage sur ses quatre endroits cités à la fois. Les motifs changeaient selon le souhait de chaque femme. Une petite fille qui n’avait pas encore l'âge qui lui permettait de faire ce tatouage, n’en avait pas le droit. Ce n’est qu’à partir que la fille devient grande ou adulte ou alors elle se marie. Il était souvent utilisé pour que la femme soit belle. Aujourd’hui, cette tradition n’existe plus mais on voit les traces de ces tatouages chez certaines femmes algériennes âgées qui ont vécu à l’époque où le tatouage était permis.",
+                    "Petite-fille: Ayyyy c’est génial ça! Je comprends maintenant pourquoi je ne peux pas mettre du tatouage sur mon visage (RIRE doux), car non seulement je suis petite mais aussi parce que cette tradition n’existe plus aujourd’hui car tout a changé.",
+                    "Grandma: oui ma belle",
+                    "Petite-fille: Mamie, tu as de très belles histoires apparemment (SOURIRE), je veux tout savoir sur la femme algérienne",
+                    "Grandma: Ah tu veux tout savoir sur les traditions et les femmes algériennes ?",
+                    "Petite-fille: oui s’il te plait, mamie, s’il te plait !",
+                    "Grandma: suis-moi alors, je vais te montrer quelque chose que tu vas certainement aimer"
+                ]) 
+            },
+            { 
+                trigger: 1000, 
+                action: () => changeCharacterSprite("character_angry.png") 
+            },
+            { 
+                trigger: 1500, 
+                action: () => playSound("suspense.mp3") 
+            },
+        ];
+
+        let currentDialogueIndex = 0;  // Garde la trace de la réplique actuelle
+
+        // Fonction pour afficher un dialogue avec des répliques
+        function startDialogue(dialogues) {
+            // Cache la boîte de dialogue avant de commencer
+            const dialogueBox = document.getElementById('dialogue');
+            dialogueBox.textContent = dialogues[currentDialogueIndex];
+            dialogueBox.style.visibility = 'visible';
+
+            // Attente d'un clic pour passer à la réplique suivante
+            dialogueBox.addEventListener('click', function nextDialogue() {
+                currentDialogueIndex++;
+                
+                // Si il y a encore des répliques, on les affiche
+                if (currentDialogueIndex < dialogues.length) {
+                    dialogueBox.textContent = dialogues[currentDialogueIndex];
+                } else {
+                    // Si toutes les répliques sont affichées, on cache la boîte de dialogue
+                    dialogueBox.style.visibility = 'hidden';
+                    currentDialogueIndex = 0;  // Réinitialisation pour la prochaine série de dialogues
+                    dialogueBox.removeEventListener('click', nextDialogue); // Enlever l'événement après la fin du dialogue
+                }
+            });
+        }
+        // Fonction pour déclencher un événement lors du scroll
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollX;
+
+            events.forEach(event => {
+                if (!event.triggered && scrollPosition >= event.trigger) {
+                    event.action();
+                    event.triggered = true; // Empêche de déclencher l'événement plusieurs fois
+                }
+            });
+        });
+
+        function showDialogue(text) {
+            const dialogueBox = document.getElementById('dialogue');
+            dialogueBox.textContent = text;
+            dialogueBox.style.visibility = 'visible';
+        }
+
+        function playSound(audioFile) {
+            const audio = new Audio(audioFile);
+            audio.play();
+        }
+
+        // Images initiales
+        const girlInit = "/persos/girl/girl-1.png";
+        const grandmaInit = "/persos/grandma/grandma.png";
+
+        // Frames des animations
+        const girlFrames = [
+            "/persos/girl/frame1.png",
+            "/persos/girl/frame2.png",
+            "/persos/girl/frame3.png",
+            "/persos/girl/frame4.png",
+        ];
+
+        const grandmaFrames = [
+            "/persos/grandma/frame1.png",
+            "/persos/grandma/frame2.png",
+        ];
+
+        let lastScrollPosition = 0;
+
+        // Précharge les images
+        function preloadImages(frames) {
+            frames.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        }
+
+        preloadImages(girlFrames);
+        preloadImages(grandmaFrames);
+
+        const girlSprite = document.getElementById("girl-sprite");
+        const grandmaSprite = document.getElementById("grandma-sprite");
+
+        const totalGirlFrames = girlFrames.length;
+        const totalGrandmaFrames = grandmaFrames.length;
+
+        function updateAnimation() {
+            const scrollPosition = window.scrollX;
+
+            const direction = scrollPosition > lastScrollPosition ? 1 : -1;
+            lastScrollPosition = scrollPosition;
+
+            // Calcule l'index de la frame à afficher pour chaque sprite
+            const girlFrameIndex = Math.floor((scrollPosition / window.innerWidth) * totalGirlFrames) % totalGirlFrames;
+            const grandmaFrameIndex = Math.floor((scrollPosition / window.innerWidth) * totalGrandmaFrames) % totalGrandmaFrames;
+
+            girlSprite.src = girlFrames[girlFrameIndex];
+            grandmaSprite.src = grandmaFrames[grandmaFrameIndex];
+
+            resetScrollStopTimer();
+        }
+
+        // Timer pour revenir aux images initiales à l'arrêt du scroll
+        let scrollStopTimer;
+        function resetScrollStopTimer() {
+            clearTimeout(scrollStopTimer);
+            scrollStopTimer = setTimeout(() => {
+                // Retourne aux images initiales
+                girlSprite.src = girlInit;
+                grandmaSprite.src = grandmaInit;
+            }, 150); // Temps après lequel on considère que le scroll s'est arrêté
+        }
+
+        // Événement de scroll
+        window.addEventListener("scroll", () => {
+            updateAnimation();
+        });
+
+
+    </script>
+
+
+    <script>
+        // function openImageInNewTab() {
+        //     const image = new Image();
+        //     image.src = "chambre.svg";
+
+        //     image.style.width = "100%"; 
+        //     image.style.height = "auto"; 
+        //     image.style.margin = "0px";
+        //     image.style.display ="block";
+
+        //     const newTab = window.open("");
+        //     if (newTab) {
+
+        //         newTab.document.body.style.margin = "0px";
+        //         newTab.document.body.style.padding = "0px";
+        //         newTab.document.body.style.width = "100%";
+        //         newTab.document.body.appendChild(image);
+        //     } else {
+        //         alert("Impossible d'ouvrir la fenêtre.");
+        //     }
+        // }
+
+        // function openImageInNewTab() 
+        // {
+        //     const images = [
+        //         "chambre.svg", 
+        //         "./Armoire.svg", 
+        //         "./Coffre.svg",
+        //         "./Etiquette.svg",
+        //         "./CadreFamille.svg"
+        //     ];
+
+        //     const newTab = window.open("");
+        //     if (newTab) {
+        //         const body = newTab.document.body;
+        //         body.style.margin = "0";
+        //         body.style.padding = "0";
+        //         body.style.width = "100%";
+
+        //         // Ajouter chaque image
+        //         images.forEach(imageSrc => {
+        //             const image = new Image();
+        //             image.src = imageSrc;
+
+        //             image.style.width = "100%"; 
+        //             image.style.height = "auto";
+        //             image.style.display = "block"; 
+        //             image.style.margin = "0 auto"; 
+
+        //             body.appendChild(image);
+        //         });
+        //     } else {
+        //         alert("Impossible d'ouvrir la fenêtre.");
+        //     }
+        // }
+
+
+
+        function openImageInNewTab() {
+            const images = [
+                { src: "chambre.svg", isBaseImage: true },  // L'image de base
+                { src: "./Armoire.svg", isBaseImage: false, width: "24%",top: "15%", left: "32%" },
+                { src: "./Coffre.svg", isBaseImage: false, width: "12%", top: "57%", left: "10%" },
+                { src: "./Etiquette.svg", isBaseImage: false, width: "17%", top: "3%", left: "5%" },
+                { src: "./CadreFamille.svg", isBaseImage: false, width: "6%", top: "25%", left: "8.9%" }
+            ];
+
+            const newTab = window.open("");
+            if (newTab) {
+                const body = newTab.document.body;
+                body.style.margin = "0";
+                body.style.padding = "0";
+                body.style.width = "100%";
+                body.style.position = "relative"; // Positionnement relatif pour les superpositions
+
+                // Ajouter les images
+                images.forEach(({ src, isBaseImage, width, top, left }) => {
+                    const image = new Image();
+                    image.src = src;
+
+                    image.style.width = isBaseImage ? "100%" : width;  // L'image de base prend toute la largeur
+                    image.style.height = "auto";
+                    image.style.display = "block";
+                    image.style.position = isBaseImage ? "relative" : "absolute"; // Positionnement absolu pour les superposées
+                    image.style.top = top || "0";
+                    image.style.left = left || "0";
+                    image.style.zIndex = isBaseImage ? "1" : "2"; // L'image de base est en dessous
+
+                    body.appendChild(image);
+                });
+            } else {
+                alert("Impossible d'ouvrir la fenêtre.");
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
