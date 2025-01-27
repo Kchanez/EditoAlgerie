@@ -1,14 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 #background {
     position: relative;
-    height: 100vh; /* Utilise la hauteur de la fenêtre */
-    display: flex;
-    flex-direction: column; /* Organise les éléments enfants en colonne */
-    align-items: center; /* Centre les éléments horizontalement */
-    justify-content: center; /* Centre les éléments verticalement */
-    background-image: url('../Images/backgrounds/background.jpg'); /* Chemin vers l'image */
-    background-size: cover; /* L'image couvre toute la surface */
-    background-position: center; /* L'image est centrée */
-    background-repeat: no-repeat; /* L'image ne se répète pas */
-    color: white; /* Couleur du texte pour contraster avec l'image de fond */
-    text-align: center; /* Centre le texte */
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#background img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2160px;
+    width: 100%;
+    animation: translate 10s ease-in-out forwards;
+}
+
+@keyframes translate {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-1080px);
+    }
+}
+
+#title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 10;
+}
+
+#title img {
+    width: 100%;
+    animation: opacity 4s ease-out 12s forwards;
+    opacity: 0;
+}
+
+@keyframes opacity {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+#bouton-entree {
+    position: absolute;
+    top: 75%;
+    left: 70%;
+    z-index: 20;
+}
+
+#bouton-propos {
+    position: absolute;
+    top: 75%;
+    left: 13%;
+    z-index: 20;
+}
+
+#bouton-propos img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 80%;
+    opacity: 0;
+    animation: opacity 2s ease-out 15s forwards;
+}
+
+#bouton-entree img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 80%;
+    opacity: 0;
+    animation: opacity 2s ease-out 16s forwards;
+}
+
+#bouton-entree img:hover {
+    transform: scale(1.05);
 }
