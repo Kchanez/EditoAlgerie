@@ -260,47 +260,7 @@
 
     </script>
 
-
-    <!-- <script>
-        function openImageInNewTab() {
-            const images = [
-                { src: "chambre.svg", isBaseImage: true },  // L'image de base
-                { src: "./Armoire.svg", isBaseImage: false, width: "24%",top: "15%", left: "32%" },
-                { src: "./Coffre.svg", isBaseImage: false, width: "12%", top: "57%", left: "10%" },
-                { src: "./Etiquette.svg", isBaseImage: false, width: "17%", top: "3%", left: "5%" },
-                { src: "./CadreFamille.svg", isBaseImage: false, width: "6%", top: "25%", left: "8.9%" }
-            ];
-
-            const newTab = window.open("");
-            if (newTab) {
-                const body = newTab.document.body;
-                body.style.margin = "0";
-                body.style.padding = "0";
-                body.style.width = "100%";
-                body.style.position = "relative"; // Positionnement relatif pour les superpositions
-
-                // Ajouter les images
-                images.forEach(({ src, isBaseImage, width, top, left }) => {
-                    const image = new Image();
-                    image.src = src;
-
-                    image.style.width = isBaseImage ? "100%" : width;  // L'image de base prend toute la largeur
-                    image.style.height = "auto";
-                    image.style.display = "block";
-                    image.style.position = isBaseImage ? "relative" : "absolute"; // Positionnement absolu pour les superposées
-                    image.style.top = top || "0";
-                    image.style.left = left || "0";
-                    image.style.zIndex = isBaseImage ? "1" : "2"; // L'image de base est en dessous
-
-                    body.appendChild(image);
-                });
-            } else {
-                alert("Impossible d'ouvrir la fenêtre.");
-            }
-        }
-    </script>   -->
-
-
+    
     <script>
         function openImageInNewTab() {
             const images = [
@@ -335,7 +295,8 @@
                     body.appendChild(image);
 
                     // Ajouter un pop-up pour l'image "Armoire"
-                    if (src === "./Armoire.svg") {
+                    if (src === "./Armoire.svg") 
+                    {
                         image.style.cursor = "pointer"; // Changer le curseur au survol
                         image.addEventListener('click', () => {
                             const popup = newTab.document.createElement('div');
@@ -358,7 +319,29 @@
                             popupImage.src = "./armoireOuverte.svg"; // Image ouverte
                             popupImage.style.width = "100%";
                             popupImage.style.height = "auto";
+                            popupImage.style.position = "relative";
                             popupContent.appendChild(popupImage);
+
+                            // Ajouter des objets dans l'armoire
+                            const objects = [
+                                { src: "./khol.png", width: "12%", top: "45%", left: "45%" },
+                                { src: "./kerdoun.png", width: "9%", top: "87%", left: "32%" },
+                                { src: "./laajar.png", width: "14%", top: "89%", left: "42%" },
+                                { src: "./albums.png", width: "15%", top: "74%", left: "61%", rotate: "z -18deg" },
+                                { src: "./Recette.png", width: "9%", top: "83%", left: "56%" , rotate: "z -5deg" },
+                                { src: "./Tapis.png", width: "10%", top: "41%", left: "60%" },
+                            ];
+
+                            objects.forEach(({ src, width, top, left }) => {
+                                const objectImage = new Image();
+                                objectImage.src = src;
+                                objectImage.style.width = width;
+                                objectImage.style.position = "absolute";
+                                objectImage.style.top = top;
+                                objectImage.style.left = left;
+                                objectImage.style.zIndex = "110"; // Par-dessus l'armoire ouverte
+                                popupContent.appendChild(objectImage);
+                            });
 
                             // Ajouter un bouton de fermeture
                             const closePopup = newTab.document.createElement('button');
@@ -381,6 +364,7 @@
 
                             newTab.document.body.appendChild(popup);
                         });
+
                     }
                 });
             } else {
@@ -389,8 +373,6 @@
         }
 
     </script>
-    
-
 </body>
 
 </html>
