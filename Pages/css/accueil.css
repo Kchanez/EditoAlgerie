@@ -15,9 +15,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 2160px;
+    height: 3240px;
     width: 100%;
-    animation: translate 10s ease-in-out forwards;
+    animation: translate 15s ease-in-out 1s forwards;
 }
 
 @keyframes translate {
@@ -26,7 +26,7 @@
     }
 
     100% {
-        transform: translateY(-1080px);
+        transform: translateY(-2245px);
     }
 }
 
@@ -40,7 +40,7 @@
 
 #title img {
     width: 100%;
-    animation: opacity 4s ease-out 12s forwards;
+    animation: opacity 4s ease-out 17s forwards;
     opacity: 0;
 }
 
@@ -58,23 +58,23 @@
 #bouton-entree {
     position: absolute;
     top: 75%;
-    left: 70%;
+    left: 39%;
     z-index: 20;
 }
 
-#bouton-propos {
+#bouton-menu {
     position: absolute;
-    top: 75%;
-    left: 13%;
+    top: 5%;
+    left: 5%;
     z-index: 20;
 }
 
-#bouton-propos img {
+#bouton-menu img {
     cursor: pointer;
     transition: transform 0.3s ease;
-    width: 80%;
+    width: 50%;
     opacity: 0;
-    animation: opacity 2s ease-out 15s forwards;
+    animation: opacity 2s ease-out 20s forwards;
 }
 
 #bouton-entree img {
@@ -82,9 +82,36 @@
     transition: transform 0.3s ease;
     width: 80%;
     opacity: 0;
-    animation: opacity 2s ease-out 16s forwards;
+    animation: opacity 2s ease-out 20s forwards;
 }
 
 #bouton-entree img:hover {
     transform: scale(1.05);
+}
+
+#bouton-menu img:hover {
+    transform: scale(1.1);
+}
+
+#popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#popup.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.hidden {
+    display: none;
 }
