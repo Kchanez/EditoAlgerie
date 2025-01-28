@@ -2,43 +2,71 @@ const textElement = document.getElementById('text');
 const typingSound = document.getElementById('typing-sound');
 const text = "L'enfance est le monde du possible, l'adolescence est le monde du doute, et la vieillesse est le monde de la mémoire.";
 const imageContainer = document.getElementById('image-container');
-const introImage = document.getElementById('intro-image');
 
-// Fonction qui montre l'image d'intro, puis commence à afficher le texte
+// Vérifie que l'audio est prêt avant utilisation
+let audioReady = false;
+
+// Initialiser l'audio uniquement après interaction utilisateur
+function initializeAudio() {
+    if (!audioReady) {
+        typingSound.play().then(() => {
+            typingSound.pause(); // Arrête immédiatement après avoir démarré
+            typingSound.currentTime = 0; // Réinitialise au début
+            audioReady = true;
+            console.log("Audio prêt et chargé !");
+        }).catch(error => {
+            console.log("Interaction utilisateur requise :", error);
+        });
+    }
+}
+
+// Ajoute un événement pour déclencher l'initialisation de l'audio
+document.body.addEventListener('click', initializeAudio);
+document.body.addEventListener('keydown', initializeAudio);
+
+// Démarrage de l'effet d'intro
 window.onload = function () {
     setTimeout(() => {
-        // Cacher l'image après un court délai
-        imageContainer.style.display = 'none';
-        // Afficher le contenu
-        document.getElementById('content').style.display = 'block';
-        startTypingEffect();  // Commence à afficher le texte avec l'animation typing
-    }, 2500);  // Délai de 2.5 secondes avant de commencer à afficher le texte
+        imageContainer.style.display = 'none'; // Cache l'image après un délai
+        document.getElementById('content').style.display = 'block'; // Affiche le texte
+        startTypingEffect(); // Démarre l'effet de saisie
+    }, 7000); // 7 secondes d'affichage pour l'image
 };
 
-// Fonction pour démarrer l'effet d'écriture
+// Fonction pour commencer l'effet d'écriture
 function startTypingEffect() {
-    typingSound.play(); // Joue l'audio
-    textElement.textContent = "";  // Réinitialiser le texte avant de le commencer
+    if (audioReady) {
+        typingSound.loop = true; // Active la boucle
+        typingSound.play().catch((error) => console.error("Erreur de lecture de l'audio :", error));
+    }
+
+    textElement.textContent = ""; // Réinitialise le texte
     let currentIndex = 0;
 
     function typeNextLetter() {
         if (currentIndex < text.length) {
-            textElement.textContent += text[currentIndex]; // Ajoute une lettre
-            typingSound.play(); // Joue le bruit de la frappe
+            textElement.textContent += text[currentIndex];
             currentIndex++;
-            setTimeout(typeNextLetter, 100);  // Appel récursif pour afficher la lettre suivante après 100ms
+            setTimeout(typeNextLetter, 100); // Ajoute la lettre suivante après 100 ms
         } else {
-            // Quand le texte est totalement écrit, on arrête le son
-            typingSound.pause();
-            typingSound.currentTime = 0; // Réinitialise l'audio pour le lire à partir du début la prochaine fois
-            setTimeout(redirectToAnotherPage, 2000); // Attends 2 secondes avant de rediriger
+            if (audioReady) {
+                typingSound.pause(); // Arrête l'audio une fois l'écriture terminée
+                typingSound.currentTime = 0; // Réinitialise l'audio
+            }
+            setTimeout(fadeOutText, 3000); // Fait disparaître le texte après 3 secondes
         }
     }
 
-    typeNextLetter();  // Commence à afficher le texte lettre par lettre
+    typeNextLetter();
 }
 
-// Fonction pour rediriger vers une autre page
+// Fonction pour faire disparaître le texte
+function fadeOutText() {
+    textElement.style.animation = "fadeOut 2s ease-out forwards";
+    setTimeout(redirectToAnotherPage, 2000); // Redirige après la disparition
+}
+
+// Redirection vers une autre page
 function redirectToAnotherPage() {
-    window.location.href = 'exposition.html';  // Remplace 'exposition.html' par l'URL de la page suivante
+    window.location.href = 'exposition.html';
 }

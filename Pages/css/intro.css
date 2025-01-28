@@ -7,14 +7,14 @@
 body {
     background-color: black;
     color: white;
-    font-family: 'Glass Antica', sans-serif; /* Application de la police */
+    font-family: 'Glass Antica', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    text-align: left; /* Aligner le texte à gauche */
+    text-align: left;
     overflow: hidden;
-    padding: 0 10px; /* Ajoute de l'espace à gauche et à droite */
+    padding: 0 10px;
 }
 
 #image-container {
@@ -30,51 +30,42 @@ body {
 }
 
 #intro-image {
-    width: 80%;
+    width: 25%;
     opacity: 0;
-    animation: fadeIn 2s ease-in-out forwards;
+    animation: fadeIn 5s ease-in-out forwards;
 }
 
 #content {
     position: relative;
-    display: none;  /* Cacher le contenu initialement */
+    display: none; /* Cacher le contenu initialement */
     color: white;
     width: 100%;
-    max-width: 800px;  /* Limite la largeur du texte */
+    max-width: 800px; /* Limite la largeur du texte */
 }
 
 #text {
-    font-size: 32px;  /* Ajuste la taille du texte */
-    white-space: nowrap; /* Empêche le retour à la ligne automatique */
+    font-size: 32px;
+    white-space: pre-wrap; /* Permet le retour à la ligne */
     overflow: hidden;
-    width: 100%;  /* Le texte prend toute la largeur disponible */
-    line-height: 1.5;  /* Espacement entre les lignes */
+    width: 100%;
+    line-height: 1.5;
     margin: 0;
-    display: inline-block; /* Permet au texte de s'afficher sans être "bloqué" */
-    border-right: 2px solid white; /* Simule un curseur de saisie */
-    animation: typing 5s steps(50) 1s forwards, blinkCaret 0.75s step-end infinite; /* Animation de la frappe */
-}
-
-/* Animation de "taper" */
-@keyframes typing {
-    from {
-        width: 0;
-    }
-    to {
-        width: 100%;
-    }
-}
-
-/* Animation du curseur clignotant */
-@keyframes blinkCaret {
-    50% {
-        border-color: transparent;
-    }
+    display: inline-block;
 }
 
 /* Animation de l'image */
 @keyframes fadeIn {
     to {
         opacity: 1;
+    }
+}
+
+/* Animation pour faire disparaître le texte */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }
