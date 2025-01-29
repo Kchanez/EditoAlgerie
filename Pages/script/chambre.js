@@ -17,19 +17,20 @@ function openImageInNewTab() {
         body.style.position = "fixed";
         body.style.top = "0";
         body.style.left = "0";
+        body.style.margin = "0px";
+        body.style.padding = "0px";
         body.style.width = "100%";
         body.style.height = "100%";
-      //body.style.background = "black"; 
         body.style.display = "flex";
         body.style.justifyContent = "center";
         body.style.alignItems = "center";
-        body.style.transition = "background 3s ease-in-out";
+        body.style.transition = "background 15s ease-in-out";
         setTimeout(() => {
             body.style.background = "black"; 
-        }, 20000);
+        }, 500);
         setTimeout(() => {
             body.style.display = "white"; 
-        }, 30000);
+        }, 300);
 
         images.forEach(({ src, isBaseImage, width, top, left }) => {
             const image = new Image();
