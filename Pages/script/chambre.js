@@ -17,19 +17,20 @@ function openImageInNewTab() {
         body.style.position = "fixed";
         body.style.top = "0";
         body.style.left = "0";
+        body.style.margin = "0px";
+        body.style.padding = "0px";
         body.style.width = "100%";
         body.style.height = "100%";
-      //body.style.background = "black"; 
         body.style.display = "flex";
         body.style.justifyContent = "center";
         body.style.alignItems = "center";
-        body.style.transition = "background 3s ease-in-out";
+        body.style.transition = "background 15s ease-in-out";
         setTimeout(() => {
             body.style.background = "black"; 
-        }, 20000);
+        }, 500);
         setTimeout(() => {
             body.style.display = "white"; 
-        }, 30000);
+        }, 300);
 
         images.forEach(({ src, isBaseImage, width, top, left }) => {
             const image = new Image();
@@ -73,8 +74,9 @@ function openImageInNewTab() {
 
                     const objects = [
                         { src: "/Images/Chambre/kholArmoire.png", descriptionSrc: "/Images/Chambre/khol.png", width: "6%", top: "42%", left: "48%" },
+                        { src: "/Images/Chambre/oud.png", descriptionSrc: "/Images/Chambre/baya.png", width: "23%", top: "29%", left: "24%" },
                         { src: "/Images/Chambre/kerdoun.png", descriptionSrc: "/Images/Chambre/kardoun.png", width: "10%", top: "89%", left: "43%" },
-                        { src: "/Images/Chambre/laajar.png", descriptionSrc: "/Images/Chambre/haik-aajar.png", width: "14%", top: "53%", left: "29%" },
+                        { src: "/Images/Chambre/laajar.png", descriptionSrc: "/Images/Chambre/haik-aajar.png", width: "14%", top: "53%", left: "60%" },
                         { src: "/Images/Chambre/albums.png", descriptionSrc: "/Images/Chambre/legende.png", width: "15%", top: "76%", left: "61%" },
                         { src: "/Images/Chambre/Recette.png", descriptionSrc: "/Images/Chambre/couscous.png", width: "10%", top: "7%", left: "30%" },
                         { src: "/Images/Chambre/Bracelet.png", descriptionSrc: "/Images/Chambre/Bracelet.png", width: "10%", top: "12%", left: "62%" },
@@ -248,7 +250,11 @@ function openImageInNewTab() {
                 });
             }
 
-
+            if (src.includes("/Images/Chambre/Armoire.svg") || 
+                src.includes("/Images/Chambre/Coffre.svg") ||
+                src.includes("/Images/Chambre/CadreFamille.png")) {
+                    image.style.filter = "drop-shadow(5px 5px 15px rgba(255, 255, 255, 0.9))";
+            }
 
         });
     } else {
