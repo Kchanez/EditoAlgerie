@@ -249,7 +249,11 @@ function openImageInNewTab() {
                 });
             }
 
-
+            if (src.includes("/Images/Chambre/Armoire.svg") || 
+                src.includes("/Images/Chambre/Coffre.svg") ||
+                src.includes("/Images/Chambre/CadreFamille.png")) {
+                    image.style.filter = "drop-shadow(5px 5px 15px rgba(255, 255, 255, 0.9))";
+            }
 
         });
     } else {
